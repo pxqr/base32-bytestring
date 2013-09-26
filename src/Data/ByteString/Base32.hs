@@ -22,6 +22,8 @@ module Data.ByteString.Base32
 import Data.ByteString as BS
 import Data.ByteString.Internal as BS
 import Data.ByteString.Base32.Internal
+import Data.List as L
+
 
 encW5 :: Word5 -> Word8
 encW5 !x
@@ -30,7 +32,7 @@ encW5 !x
 {-# INLINE encW5 #-}
 
 encTable :: EncTable
-encTable = BS.pack $ fmap encW5 [0..31]
+encTable = BS.pack $ L.map encW5 [0..31]
 
 -- | Encode a bytestring into base32 form.
 encode :: ByteString -> ByteString
@@ -48,7 +50,7 @@ decW5 !x
 {-# INLINE decW5 #-}
 
 decTable :: ByteString
-decTable = BS.pack $ fmap decW5 [minBound .. maxBound]
+decTable = BS.pack $ L.map decW5 [minBound .. maxBound]
 
 -- | Decode a base32 encoded bytestring.
 decode :: ByteString -> ByteString
