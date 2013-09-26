@@ -29,7 +29,7 @@ spec = do
     it "size always multiple of 8 bytes" $ property $ \bs ->
       (BS.length (encode bs) `rem` 8) `shouldBe` 0
 
-    it "padding less than" $ property $ \bs ->
+    it "padding less than 8 bytes" $ property $ \bs ->
       BC.count '=' bs `shouldSatisfy` (< 8)
 
   describe "decode" $ do
