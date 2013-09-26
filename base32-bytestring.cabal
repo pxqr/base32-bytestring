@@ -32,7 +32,7 @@ library
   exposed-modules:     Data.ByteString.Base32
                      , Data.ByteString.Base32.Hex
   other-modules:       Data.ByteString.Base32.Internal
-  build-depends:       base       == 4.6.*
+  build-depends:       base       == 4.*
                      , bytestring == 0.10.*
                      , cpu
                      , bits-extras
