@@ -14,7 +14,8 @@
 --
 {-# LANGUAGE BangPatterns #-}
 module Data.ByteString.Base32
-       ( encode
+       ( Base32
+       , encode
        , decode
        , decodeLenient
        ) where
@@ -24,6 +25,8 @@ import Data.ByteString.Internal as BS
 import Data.ByteString.Base32.Internal
 import Data.List as L
 
+
+type Base32 = ByteString
 
 encW5 :: Word5 -> Word8
 encW5 !x
@@ -35,7 +38,7 @@ encTable :: EncTable
 encTable = BS.pack $ L.map encW5 [0..31]
 
 -- | Encode a bytestring into base32 form.
-encode :: ByteString -> ByteString
+encode :: ByteString -> Base32
 encode = unpack5 encTable
 
 decW5 :: Word8 -> Word5
@@ -53,7 +56,7 @@ decTable :: ByteString
 decTable = BS.pack $ L.map decW5 [minBound .. maxBound]
 
 -- | Decode a base32 encoded bytestring.
-decode :: ByteString -> ByteString
+decode :: Base32 -> ByteString
 decode = pack5 decTable
 
 decCharLenient :: Char -> Word5
