@@ -154,8 +154,11 @@ encode bs =
 
 type DecTable = Ptr Word5
 
-pack5 :: DecTable -> (Word8 -> Word5) -> ByteString -> ByteString
-pack5 !tbl !f bs @ (PS fptr off sz) =
+invIx :: Word5
+invIx = 255
+
+pack5 :: DecTable -> ByteString -> ByteString
+pack5 !tbl bs @ (PS fptr off sz) =
   unsafePerformIO $ do
     let packedSize = dstSize $ BS.length bs
     BS.createAndTrim packedSize $ \ dst -> do
@@ -218,11 +221,9 @@ pack5 !tbl !f bs @ (PS fptr off sz) =
                 else smallStep dst src 0 (unused `shiftL` (8 - un_cnt)) 8
            else smallStep dst
                   (src `advancePtr` 1) (pred s)
-                  ((unused `unsafeShiftL` 5) .|. fromIntegral (f w8))
+                  ((unused `unsafeShiftL` 5)
+                   .|. fromIntegral (lookupTable (fromIntegral w8)))
                   (un_cnt + 5)
-
-invIx :: Word5
-invIx = 255
 
 decW5 :: Word8 -> Word5
 decW5 !x
@@ -241,7 +242,7 @@ decode :: ByteString -> ByteString
 decode bs =
   unsafePerformIO $ do
     withForeignPtr decTable $ \tbl ->
-      return $ pack5 tbl decW5 bs
+      return $ pack5 tbl bs
 
 {-----------------------------------------------------------------------
 -- Lenient Decoding
