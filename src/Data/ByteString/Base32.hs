@@ -62,10 +62,8 @@ padCeilN !n !x
 -- Encoding
 -----------------------------------------------------------------------}
 
-type EncTable = Ptr Word8
-
-unpack5 :: EncTable -> ByteString -> ByteString
-unpack5 !tbl bs @ (PS fptr off sz) =
+unpack5Ptr :: Ptr Word8 -> ByteString -> ByteString
+unpack5Ptr !tbl bs @ (PS fptr off sz) =
   unsafePerformIO $ do
     let unpackedSize = dstSize $ BS.length bs
     BS.create unpackedSize $ \ dst -> do
@@ -132,21 +130,29 @@ unpack5 !tbl bs @ (PS fptr off sz) =
                   (advancePtr src 1) (pred s)
                   (w8 `shiftL` usd_cnt) (8 - usd_cnt)
 
+type EncTable = ByteString
+
+unpack5 :: EncTable -> ByteString -> ByteString
+unpack5 (PS fptr off len) bs
+  | len /= 32
+  = error $ "base32: unpack5: invalid lookup table size " ++ show len
+  | otherwise =
+  unsafePerformIO $ do
+    withForeignPtr fptr $ \ptr -> do
+      return $ unpack5Ptr (ptr `advancePtr` off) bs
+
 encW5 :: Word5 -> Word8
 encW5 !x
   |  x <= 25  = 65 + x
   | otherwise = 24 + x
 {-# INLINE encW5 #-}
 
-encTable :: ForeignPtr Word8
-PS encTable _ _ = BS.pack $ fmap encW5 [0..31]
+encTable :: EncTable
+encTable = BS.pack $ fmap encW5 [0..31]
 
 -- | Encode a bytestring into base32 form.
 encode :: ByteString -> ByteString
-encode bs =
-  unsafePerformIO $ do
-    withForeignPtr encTable $ \ptr -> do
-      return $ unpack5 ptr bs
+encode = unpack5 encTable
 
 {-----------------------------------------------------------------------
 -- Decoding
