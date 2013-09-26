@@ -37,7 +37,7 @@ library
                      , Data.ByteString.Base32.Hex
   other-modules:       Data.ByteString.Base32.Internal
   build-depends:       base        == 4.*
-                     , bytestring  == 0.10.*
+                     , bytestring  >= 0.9
                      , cpu         == 0.1.*
                      , bits-extras == 0.1.*
   ghc-options:         -O2 -Wall
