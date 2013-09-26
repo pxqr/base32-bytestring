@@ -1,2 +1,3 @@
 * TODO base32hex
+* TODO coverage
 * TODO lazy bytestrings
