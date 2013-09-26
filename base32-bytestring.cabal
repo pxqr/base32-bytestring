@@ -8,9 +8,9 @@ copyright:           (c) 2013 Sam Truzjan
 category:            Codec, Data
 build-type:          Simple
 cabal-version:       >= 1.10
-synopsis: Fast base32 encoding and decoding for ByteStrings
+synopsis: Fast base32 and base32hex codec for ByteStrings
 description:
-  Base32 encoding according to RFC4648
+  base32 and base32hex codec according to RFC4648
   <http://tools.ietf.org/html/rfc4648>
   This package have API similar to base64-bytestring.
 

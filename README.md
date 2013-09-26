@@ -1,5 +1,6 @@
-`base32-bytestring` is efficient [base32][rfc] codec for bytestrings.
-The API is similar to [base64-bytestring][base64-pkg] package.
+`base32-bytestring` is efficient [base32 and base32hex][rfc] codec for
+bytestrings. The API is similar to [base16-bytestring][base16-pkg] and
+[base64-bytestring][base64-pkg] packages.
 
 ### Performance
 
@@ -15,6 +16,7 @@ The API is similar to [base64-bytestring][base64-pkg] package.
 
 You can report any issues at [Issue tracker][issues].
 
+[base16-pkg]: http://hackage.haskell.org/package/base16-bytestring
 [base64-pkg]: http://hackage.haskell.org/package/base64-bytestring-1.0.0.1
 [rfc]:        http://tools.ietf.org/html/rfc4648
 [travis-img]: https://travis-ci.org/cobit/base32-bytestring.png
