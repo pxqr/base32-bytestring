@@ -36,10 +36,10 @@ library
   exposed-modules:     Data.ByteString.Base32
                      , Data.ByteString.Base32.Hex
   other-modules:       Data.ByteString.Base32.Internal
-  build-depends:       base       == 4.*
-                     , bytestring == 0.10.*
-                     , cpu
-                     , bits-extras
+  build-depends:       base        == 4.*
+                     , bytestring  == 0.10.*
+                     , cpu         == 0.1.*
+                     , bits-extras == 0.1.*
   ghc-options:         -O2 -Wall
 
 test-suite spec
@@ -51,7 +51,7 @@ test-suite spec
   build-depends:       base   == 4.*
                      , base32-bytestring
                      , bytestring
-                     , hspec  >= 1.7
+                     , hspec
                      , QuickCheck
   ghc-options:         -Wall
 
