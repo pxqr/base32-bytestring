@@ -57,4 +57,4 @@ decode :: Base32Hex -> ByteString
 decode = pack5 decTable
 
 decodeLenient :: ByteString -> ByteString
-decodeLenient = undefined
+decodeLenient = id
