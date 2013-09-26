@@ -8,11 +8,15 @@ copyright:           (c) 2013 Sam Truzjan
 category:            Codec, Data
 build-type:          Simple
 cabal-version:       >= 1.10
+homepage:            https://github.com/cobit/base32-bytestring
+bug-reports:         https://github.com/cobit/base32-bytestring/issues
 synopsis: Fast base32 and base32hex codec for ByteStrings
 description:
   base32 and base32hex codec according to RFC4648
   <http://tools.ietf.org/html/rfc4648>
   This package have API similar to base64-bytestring.
+
+extra-source-files:    README.md
 
 source-repository head
   type:                git
