@@ -30,6 +30,7 @@ library
   default-extensions:
   hs-source-dirs:      src
   exposed-modules:     Data.ByteString.Base32
+  other-modules:       Data.ByteString.Base32.Internal
   build-depends:       base       == 4.6.*
                      , bytestring == 0.10.*
                      , cpu
