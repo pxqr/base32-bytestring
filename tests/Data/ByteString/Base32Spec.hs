@@ -2,6 +2,7 @@
 module Data.ByteString.Base32Spec (spec) where
 
 import Control.Applicative
+import Control.Exception
 import Data.ByteString as BS
 import Data.ByteString.Internal as BS
 import Data.ByteString.Base32 as Base32
@@ -42,5 +43,9 @@ spec = do
 
     it "inverse for encode" $ property $ \bs ->
       decode (encode bs) == bs
+
+    it "fail gracefully if encoded data contains non alphabet chars" $ do
+      evaluate (decode "0=======")         `shouldThrow` anyErrorCall
+      evaluate (decode "AAAAAAAA0=======") `shouldThrow` anyErrorCall
 
 --  describe "decodeLenient" $ do
