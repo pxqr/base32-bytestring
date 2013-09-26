@@ -227,11 +227,13 @@ pack5 !tbl bs @ (PS fptr off sz) =
 
 decW5 :: Word8 -> Word5
 decW5 !x
-  | x <  50 {- c2w '2' -} = invIx
-  | x <= 55 {- c2w '7' -} = x - 24
-  | x <  65 {- c2w 'A' -} = invIx
-  | x <= 90 {- c2w 'Z' -} = x - 65
-  |       otherwise       = invIx
+  | x <  50  {- c2w '2' -} = invIx
+  | x <= 55  {- c2w '7' -} = x - 24 {- c2w '2' - 26 -}
+  | x <  65  {- c2w 'A' -} = invIx
+  | x <= 90  {- c2w 'Z' -} = x - 65 {- c2w 'A' -}
+  | x <  97  {- c2w 'a' -} = invIx
+  | x <= 122 {- c2w 'z' -} = x - 97 {- c2w 'a' -}
+  | otherwise = invIx
 {-# INLINE decW5 #-}
 
 decTable :: ForeignPtr Word8

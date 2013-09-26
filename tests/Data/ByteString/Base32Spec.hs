@@ -4,8 +4,9 @@ module Data.ByteString.Base32Spec (spec) where
 import Control.Applicative
 import Control.Exception
 import Data.ByteString as BS
-import Data.ByteString.Internal as BS
+import Data.ByteString.Char8 as BC
 import Data.ByteString.Base32 as Base32
+import Data.Char
 import Test.Hspec
 import Test.QuickCheck
 
@@ -29,7 +30,7 @@ spec = do
       (BS.length (encode bs) `rem` 8) `shouldBe` 0
 
     it "padding less than" $ property $ \bs ->
-      count (c2w '=') bs `shouldSatisfy` (< 8)
+      BC.count '=' bs `shouldSatisfy` (< 8)
 
   describe "decode" $ do
     it "conform RFC examples" $ do
@@ -43,6 +44,9 @@ spec = do
 
     it "inverse for encode" $ property $ \bs ->
       decode (encode bs) == bs
+
+    it "case insensitive" $ property $ \bs ->
+      decode (BC.map toLower (encode bs)) == bs
 
     it "fail gracefully if encoded data contains non alphabet chars" $ do
       evaluate (decode "0=======")         `shouldThrow` anyErrorCall
