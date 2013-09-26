@@ -14,7 +14,8 @@
 --
 {-# LANGUAGE BangPatterns #-}
 module Data.ByteString.Base32.Hex
-       ( encode
+       ( Base32Hex
+       , encode
        , decode
        , decodeLenient
        ) where
@@ -23,6 +24,8 @@ import Data.ByteString as BS
 import Data.ByteString.Base32.Internal
 import Data.List as L
 
+
+type Base32Hex = ByteString
 
 encW5 :: Word5 -> Word8
 encW5 !x
@@ -33,7 +36,7 @@ encTable :: EncTable
 encTable = BS.pack $ L.map encW5 [0..31]
 
 -- | Encode a bytestring into base32hex form.
-encode :: ByteString -> ByteString
+encode :: ByteString -> Base32Hex
 encode = unpack5 encTable
 
 decW5 :: Word8 -> Word5
@@ -50,7 +53,7 @@ decTable :: DecTable
 decTable = BS.pack $ L.map decW5 [minBound .. maxBound]
 
 -- | Decode a base32hex encoded bytestring.
-decode :: ByteString -> ByteString
+decode :: Base32Hex -> ByteString
 decode = pack5 decTable
 
 decodeLenient :: ByteString -> ByteString
