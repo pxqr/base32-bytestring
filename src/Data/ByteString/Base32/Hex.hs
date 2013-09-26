@@ -56,5 +56,5 @@ decTable = BS.pack $ L.map decW5 [minBound .. maxBound]
 decode :: Base32Hex -> ByteString
 decode = pack5 decTable
 
-decodeLenient :: ByteString -> ByteString
+decodeLenient :: Base32Hex -> ByteString
 decodeLenient = id

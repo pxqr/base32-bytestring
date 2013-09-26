@@ -77,5 +77,5 @@ decW5Lenient = decCharLenient . w2c
 
 -- TODO padding leniency
 -- | Case-insensitive counterpart of the 'decode'.
-decodeLenient :: ByteString -> ByteString
+decodeLenient :: Base32 -> ByteString
 decodeLenient = id -- pack5 nullPtr decW5Lenient
