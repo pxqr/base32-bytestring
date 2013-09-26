@@ -152,13 +152,11 @@ encode bs =
 -- Decoding
 -----------------------------------------------------------------------}
 
-type DecTable = Ptr Word5
-
 invIx :: Word5
 invIx = 255
 
-pack5 :: DecTable -> ByteString -> ByteString
-pack5 !tbl bs @ (PS fptr off sz) =
+pack5Ptr :: Ptr Word5 -> ByteString -> ByteString
+pack5Ptr !tbl bs @ (PS fptr off sz) =
   unsafePerformIO $ do
     let packedSize = dstSize $ BS.length bs
     BS.createAndTrim packedSize $ \ dst -> do
@@ -225,6 +223,17 @@ pack5 !tbl bs @ (PS fptr off sz) =
                    .|. fromIntegral (lookupTable (fromIntegral w8)))
                   (un_cnt + 5)
 
+type DecTable = ByteString
+
+pack5 :: DecTable -> ByteString -> ByteString
+pack5 (PS fptr off len) bs
+  | len /= 256
+  = error $ "base32: pack5: invalid lookup table size " ++ show len
+  |  otherwise  =
+    unsafePerformIO $ do
+      withForeignPtr fptr $ \ptr ->
+        return $ pack5Ptr (ptr `advancePtr` off) bs
+
 decW5 :: Word8 -> Word5
 decW5 !x
   | x <  50  {- c2w '2' -} = invIx
@@ -236,15 +245,12 @@ decW5 !x
   | otherwise = invIx
 {-# INLINE decW5 #-}
 
-decTable :: ForeignPtr Word8
-PS decTable _ _ = BS.pack $ fmap decW5 [minBound .. maxBound]
+decTable :: ByteString
+decTable = BS.pack $ fmap decW5 [minBound .. maxBound]
 
 -- | Decode a base32 encoded bytestring.
 decode :: ByteString -> ByteString
-decode bs =
-  unsafePerformIO $ do
-    withForeignPtr decTable $ \tbl ->
-      return $ pack5 tbl bs
+decode = pack5 decTable
 
 {-----------------------------------------------------------------------
 -- Lenient Decoding
