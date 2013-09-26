@@ -5,7 +5,7 @@ notifications:
     - pxqr.sta@gmail.com
 
 install:
-  cabal install --enable-tests --enable-benchmark --only-dependencies
+  cabal install --enable-tests --enable-benchmark --force-reinstalls --only-dependencies
 
 script:
   cabal configure --enable-tests --enable-benchmark && cabal build && cabal test
