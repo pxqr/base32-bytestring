@@ -1,5 +1,5 @@
 name:                base32-bytestring
-version:             0.0.0.0
+version:             0.1.0.0
 license:             BSD3
 license-file:        LICENSE
 author:              Sam Truzjan
@@ -14,20 +14,25 @@ synopsis: Fast base32 and base32hex codec for ByteStrings
 description:
   base32 and base32hex codec according to RFC4648
   <http://tools.ietf.org/html/rfc4648>
-  This package have API similar to base64-bytestring.
+  .
+  The package API is similar to base64-bytestring.
+  .
+  [/Release notes/]
+  .
+    * /0.1.0.0:/ Initial version.
 
 extra-source-files:    README.md
 
 source-repository head
   type:                git
-  location:            git://github.com/cobit/base32.git
+  location:            git://github.com/cobit/base32-bytestring.git
   branch:              master
 
 source-repository this
   type:                git
-  location:            git://github.com/cobit/base32.git
+  location:            git://github.com/cobit/base32-bytestring.git
   branch:              master
-  tag:                 v0.0.0.0
+  tag:                 v0.1.0.0
 
 library
   default-language:    Haskell2010
