@@ -26,6 +26,7 @@ import Data.ByteString.Base32.Internal
 import Data.List as L
 
 
+-- | Base32 encoded bytestring.
 type Base32 = ByteString
 
 encW5 :: Word5 -> Word8
