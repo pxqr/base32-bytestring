@@ -17,10 +17,10 @@ main = defaultMain
   , bench "base32/decode/regular/5M" $ nf Base32.decode
       $ BS.replicate 5000000 0x41
 
-  , bench "base32/decode/lenient/1M" $ nf Base32.decodeLenient
-      $ BS.replicate 1000000 0x41
-  , bench "base32/decode/lenient/5M" $ nf Base32.decodeLenient
-      $ BS.replicate 5000000 0x41
+--  , bench "base32/decode/lenient/1M" $ nf Base32.decodeLenient
+--      $ BS.replicate 1000000 0x41
+--  , bench "base32/decode/lenient/5M" $ nf Base32.decodeLenient
+--      $ BS.replicate 5000000 0x41
 
   , bench "base32hex/encode/1M" $ nf Base32Hex.encode
       $ BS.replicate 1000000 0x8e
@@ -32,8 +32,8 @@ main = defaultMain
   , bench "base32hex/decode/regular/5M" $ nf Base32Hex.decode
       $ BS.replicate 5000000 0x41
 
-  , bench "base32hex/decode/lenient/1M" $ nf Base32Hex.decodeLenient
-      $ BS.replicate 1000000 0x41
-  , bench "base32hex/decode/lenient/5M" $ nf Base32Hex.decodeLenient
-      $ BS.replicate 5000000 0x41
+--  , bench "base32hex/decode/lenient/1M" $ nf Base32Hex.decodeLenient
+--      $ BS.replicate 1000000 0x41
+--  , bench "base32hex/decode/lenient/5M" $ nf Base32Hex.decodeLenient
+--      $ BS.replicate 5000000 0x41
   ]
