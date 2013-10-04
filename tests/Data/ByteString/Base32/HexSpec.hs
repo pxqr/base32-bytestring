@@ -48,13 +48,13 @@ spec = do
 
   describe "decodeLenient" $ do
     it "conform RFC examples" $ do
-      decodeLenient ""                 `shouldBe` ""
-      decodeLenient "MY======"         `shouldBe` "f"
-      decodeLenient "MZXQ===="         `shouldBe` "fo"
-      decodeLenient  "MZXW6==="        `shouldBe` "foo"
-      decodeLenient "MZXW6YQ="         `shouldBe` "foob"
-      decodeLenient "MZXW6YTB"         `shouldBe` "fooba"
-      decodeLenient "MZXW6YTBOI======" `shouldBe` "foobar"
+      decode ""         `shouldBe` ""
+      decode "CO======" `shouldBe` "f"
+      decode "CPNG====" `shouldBe` "fo"
+      decode "CPNMU===" `shouldBe` "foo"
+      decode "CPNMUOG=" `shouldBe` "foob"
+      decode "CPNMUOJ1" `shouldBe` "fooba"
+      decode "CPNMUOJ1E8======" `shouldBe` "foobar"
 
     it "inverse for encode" $ property $ \bs ->
       decodeLenient (encode bs) == bs
@@ -64,4 +64,4 @@ spec = do
 
     it "skip non alphabet chars" $ do
       decodeLenient "|"   `shouldBe` ""
-      decodeLenient "M|Y" `shouldBe` "f"
+      decodeLenient "C|O" `shouldBe` "f"
