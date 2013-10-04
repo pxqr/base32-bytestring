@@ -21,7 +21,6 @@ module Data.ByteString.Base32
        ) where
 
 import Data.ByteString as BS
-import Data.ByteString.Internal as BS
 import Data.ByteString.Base32.Internal
 import Data.List as L
 
@@ -60,23 +59,6 @@ decTable = BS.pack $ L.map decW5 [minBound .. maxBound]
 decode :: Base32 -> ByteString
 decode = pack5 decTable
 
-decCharLenient :: Char -> Word5
-decCharLenient x
-  | x <  '2'  = err
-  | x <= '7'  = 26 + fromIntegral (fromEnum x) - fromIntegral (fromEnum '2')
-  | x <  'A'  = err
-  | x <= 'Z'  = fromIntegral (fromEnum x) - fromIntegral (fromEnum 'A')
-  | x <  'a'  = err
-  | x <= 'z'  = fromIntegral (fromEnum x) - fromIntegral (fromEnum 'a')
-  | otherwise = err
-  where
-    err = error "base32: decodeChar: out of range"
-
-decW5Lenient :: Word8 -> Word5
-decW5Lenient = decCharLenient . w2c
-{-# INLINE decW5Lenient #-}
-
--- TODO padding leniency
 -- | Case-insensitive counterpart of the 'decode'.
 decodeLenient :: Base32 -> ByteString
-decodeLenient = id -- pack5 nullPtr decW5Lenient
+decodeLenient = pack5Lenient decTable

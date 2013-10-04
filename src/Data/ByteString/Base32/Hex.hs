@@ -58,4 +58,4 @@ decode :: Base32Hex -> ByteString
 decode = pack5 decTable
 
 decodeLenient :: Base32Hex -> ByteString
-decodeLenient = id
+decodeLenient = pack5Lenient decTable
