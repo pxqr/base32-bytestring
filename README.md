@@ -8,7 +8,7 @@ bytestrings. The API is similar to [base16-bytestring][base16-pkg] and
 |:---------------:|:---------------:|
 |encoding         | 400             |
 |decoding         | 400             |
-|lenient decoding | N/A             |
+|lenient decoding | 250             |
 
 ### Build Status [![Build Status][travis-img]][travis-log]
 
