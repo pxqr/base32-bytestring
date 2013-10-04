@@ -234,43 +234,12 @@ pack5 (PS fptr off len) bs
 -- Lenient Decoding
 -----------------------------------------------------------------------}
 
-pack5PtrLenient :: Ptr Word5 -> ByteString -> ByteString
-pack5PtrLenient !tbl bs @ (PS fptr off sz) =
-  unsafePerformIO $ do
-    BS.createAndTrim (sz * 2) $ \ dst -> do
-        withForeignPtr fptr $ \ ptr -> do
-          dst_end <- smallStep dst (advancePtr ptr off) sz 0 0
-          return (dst_end `minusPtr` dst)
-  where
-    lookupTable :: Word8 -> Word5
-    lookupTable ix = inlinePerformIO (peekByteOff tbl (fromIntegral ix))
-    {-# INLINE lookupTable #-}
-
-    smallStep :: Ptr Word8 -> Ptr Word5 -> Int -> Word -> Int
-              -> IO (Ptr Word5)
-    smallStep !dst !src !s !unused !un_cnt
-      | un_cnt >= 8 = do
-        poke dst $ fromIntegral (unused `unsafeShiftR` (un_cnt - 8))
-        smallStep (dst `advancePtr` 1) src s unused (un_cnt - 8)
-
-      |   s == 0  = return dst
-      | otherwise = do
-        w8 <- peek src
-        if w2c w8 == '='
-           then if (bit un_cnt - 1) .&. unused == 0
-                then smallStep dst src 0 0 0
-                else smallStep dst src 0 (unused `shiftL` (8 - un_cnt)) 8
-           else smallStep dst
-                  (src `advancePtr` 1) (pred s)
-                  ((unused `unsafeShiftL` 5)
-                   .|. fromIntegral (lookupTable (fromIntegral w8)))
-                  (un_cnt + 5)
+isInAlphabet :: Ptr Word5 -> Word8 -> Bool
+isInAlphabet !tbl !ix =
+  inlinePerformIO (peekByteOff tbl (fromIntegral ix)) /= invIx
 
 pack5Lenient :: DecTable -> ByteString -> ByteString
-pack5Lenient (PS fptr off len) bs
-  | len /= 256
-  = error $ "base32: pack5: invalid lookup table size " ++ show len
-  |  otherwise  =
-    unsafePerformIO $ do
-      withForeignPtr fptr $ \ptr ->
-        return $ pack5Ptr (ptr `advancePtr` off) bs
+pack5Lenient tbl @ (PS fptr _ _) bs =
+  unsafePerformIO $ do
+    withForeignPtr fptr $ \ !tbl_ptr -> do
+      return $! pack5 tbl $ BS.filter (isInAlphabet tbl_ptr) bs
