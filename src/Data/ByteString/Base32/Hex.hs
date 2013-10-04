@@ -17,7 +17,7 @@ module Data.ByteString.Base32.Hex
        ( Base32Hex
        , encode
        , decode
---       , decodeLenient
+       , decodeLenient
        ) where
 
 import Data.ByteString as BS

@@ -45,3 +45,23 @@ spec = do
     it "fail gracefully if encoded data contains non alphabet chars" $ do
       evaluate (decode "#=======")         `shouldThrow` anyErrorCall
       evaluate (decode "AAAAAAAA#=======") `shouldThrow` anyErrorCall
+
+  describe "decodeLenient" $ do
+    it "conform RFC examples" $ do
+      decodeLenient ""                 `shouldBe` ""
+      decodeLenient "MY======"         `shouldBe` "f"
+      decodeLenient "MZXQ===="         `shouldBe` "fo"
+      decodeLenient  "MZXW6==="        `shouldBe` "foo"
+      decodeLenient "MZXW6YQ="         `shouldBe` "foob"
+      decodeLenient "MZXW6YTB"         `shouldBe` "fooba"
+      decodeLenient "MZXW6YTBOI======" `shouldBe` "foobar"
+
+    it "inverse for encode" $ property $ \bs ->
+      decodeLenient (encode bs) == bs
+
+    it "case insensitive" $ property $ \bs ->
+      decodeLenient (BC.map toLower (encode bs)) == bs
+
+    it "skip non alphabet chars" $ do
+      decodeLenient "|"   `shouldBe` ""
+      decodeLenient "M|Y" `shouldBe` "f"
