@@ -16,12 +16,9 @@ description:
   <http://tools.ietf.org/html/rfc4648>
   .
   The package API is similar to base64-bytestring.
-  .
-  [/Release notes/]
-  .
-    * /0.1.0.0:/ Initial version.
 
 extra-source-files:    README.md
+                     , changelog
 
 source-repository head
   type:                git
