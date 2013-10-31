@@ -19,6 +19,6 @@ You can report any issues at [Issue tracker][issues].
 [base16-pkg]: http://hackage.haskell.org/package/base16-bytestring
 [base64-pkg]: http://hackage.haskell.org/package/base64-bytestring-1.0.0.1
 [rfc]:        http://tools.ietf.org/html/rfc4648
-[travis-img]: https://travis-ci.org/cobit/base32-bytestring.png
-[travis-log]: https://travis-ci.org/cobit/base32-bytestring
-[issues]:     https://github.com/cobit/base32-bytestring/issues
+[travis-img]: https://travis-ci.org/pxqr/base32-bytestring.png
+[travis-log]: https://travis-ci.org/pxqr/base32-bytestring
+[issues]:     https://github.com/pxqr/base32-bytestring/issues

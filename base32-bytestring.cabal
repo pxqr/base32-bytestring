@@ -4,12 +4,12 @@ license:             BSD3
 license-file:        LICENSE
 author:              Sam Truzjan
 maintainer:          Sam Truzjan <pxqr.sta@gmail.com>
-copyright:           (c) 2013 Sam Truzjan
+copyright:           (c) 2013, Sam Truzjan
 category:            Codec, Data
 build-type:          Simple
 cabal-version:       >= 1.10
-homepage:            https://github.com/cobit/base32-bytestring
-bug-reports:         https://github.com/cobit/base32-bytestring/issues
+homepage:            https://github.com/pxqr/base32-bytestring
+bug-reports:         https://github.com/pxqr/base32-bytestring/issues
 synopsis: Fast base32 and base32hex codec for ByteStrings
 description:
   base32 and base32hex codec according to RFC4648
@@ -22,12 +22,12 @@ extra-source-files:    README.md
 
 source-repository head
   type:                git
-  location:            git://github.com/cobit/base32-bytestring.git
+  location:            git://github.com/pxqr/base32-bytestring.git
   branch:              master
 
 source-repository this
   type:                git
-  location:            git://github.com/cobit/base32-bytestring.git
+  location:            git://github.com/pxqr/base32-bytestring.git
   branch:              master
   tag:                 v0.1.1.0
 
