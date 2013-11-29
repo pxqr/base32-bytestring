@@ -36,7 +36,7 @@ library
   default-extensions:
   hs-source-dirs:      src
   exposed-modules:     Data.ByteString.Base32
-                     , Data.ByteString.Base32.Hex
+                       Data.ByteString.Base32.Hex
   other-modules:       Data.ByteString.Base32.Internal
   build-depends:       base        == 4.*
                      , bytestring  >= 0.9
@@ -50,6 +50,8 @@ test-suite spec
   type:                exitcode-stdio-1.0
   hs-source-dirs:      tests
   main-is:             Spec.hs
+  other-modules:       Data.ByteString.Base32Spec
+                       Data.ByteString.Base32.HexSpec
   build-depends:       base   == 4.*
                      , base32-bytestring
                      , bytestring
