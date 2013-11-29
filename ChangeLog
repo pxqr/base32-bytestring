@@ -1,5 +1,9 @@
 2013-11-29  Sam Truzjan  <pxqr.sta@gmail.com>
 
+	* 0.2.0.1: Add tests to tarball.
+
+2013-11-29  Sam Truzjan  <pxqr.sta@gmail.com>
+
 	* 0.2.0.0: Allow to catch decoding errors in pure code.
 
 2013-10-31  Sam Truzjan  <pxqr.sta@gmail.com>
