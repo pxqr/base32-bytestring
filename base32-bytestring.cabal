@@ -18,7 +18,7 @@ description:
   The package API is similar to base64-bytestring.
 
 extra-source-files:    README.md
-                     , changelog
+                     , ChangeLog
 
 source-repository head
   type:                git
