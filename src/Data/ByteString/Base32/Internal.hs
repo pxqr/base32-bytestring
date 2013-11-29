@@ -22,6 +22,7 @@ module Data.ByteString.Base32.Internal
        , invIx
        ) where
 
+import Control.Exception hiding (mask)
 import Data.Bits.Extras
 import Data.ByteString as BS
 import Data.ByteString.Internal as BS
@@ -151,9 +152,17 @@ unpack5 (PS fptr off len) bs
 invIx :: Word5
 invIx = 255
 
-pack5Ptr :: Ptr Word5 -> ByteString -> ByteString
+type Result = Either String
+
+cleanup :: IO a -> Result a
+cleanup io = unsafePerformIO $
+    catch (io >>= evaluate >>= return . Right) handler
+  where
+    handler (ErrorCall msg) = return (Left msg)
+
+pack5Ptr :: Ptr Word5 -> ByteString -> Result ByteString
 pack5Ptr !tbl bs @ (PS fptr off sz) =
-  unsafePerformIO $ do
+  cleanup $ do
     let packedSize = dstSize $ BS.length bs
     BS.createAndTrim packedSize $ \ dst -> do
         withForeignPtr fptr $ \ ptr -> do
@@ -162,7 +171,7 @@ pack5Ptr !tbl bs @ (PS fptr off sz) =
   where
     lookupTable :: Word8 -> Word5
     lookupTable ix
-        | x == invIx = error $ "base32: decode: invalid character" ++ show ix
+        | x == invIx = error $ show (w2c ix) ++ " is not base32 character"
         | otherwise  = x
       where x = inlinePerformIO (peekByteOff tbl (fromIntegral ix))
     {-# INLINE lookupTable #-}
@@ -221,7 +230,7 @@ pack5Ptr !tbl bs @ (PS fptr off sz) =
 
 type DecTable = ByteString
 
-pack5 :: DecTable -> ByteString -> ByteString
+pack5 :: DecTable -> ByteString -> Result ByteString
 pack5 (PS fptr off len) bs
   | len /= 256
   = error $ "base32: pack5: invalid lookup table size " ++ show len
@@ -238,7 +247,7 @@ isInAlphabet :: Ptr Word5 -> Word8 -> Bool
 isInAlphabet !tbl !ix =
   inlinePerformIO (peekByteOff tbl (fromIntegral ix)) /= invIx
 
-pack5Lenient :: DecTable -> ByteString -> ByteString
+pack5Lenient :: DecTable -> ByteString -> Either String ByteString
 pack5Lenient tbl @ (PS fptr _ _) bs =
   unsafePerformIO $ do
     withForeignPtr fptr $ \ !tbl_ptr -> do

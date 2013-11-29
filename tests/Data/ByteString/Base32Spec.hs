@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS -fno-warn-orphans #-}
 module Data.ByteString.Base32Spec (spec) where
 
@@ -34,19 +35,19 @@ spec = do
 
   describe "decode" $ do
     it "conform RFC examples" $ do
-      decode ""                 `shouldBe` ""
-      decode "MY======"         `shouldBe` "f"
-      decode "MZXQ===="         `shouldBe` "fo"
-      decode  "MZXW6==="        `shouldBe` "foo"
-      decode "MZXW6YQ="         `shouldBe` "foob"
-      decode "MZXW6YTB"         `shouldBe` "fooba"
-      decode "MZXW6YTBOI======" `shouldBe` "foobar"
+      decode ""                 `shouldBe` Right ""
+      decode "MY======"         `shouldBe` Right "f"
+      decode "MZXQ===="         `shouldBe` Right "fo"
+      decode  "MZXW6==="        `shouldBe` Right "foo"
+      decode "MZXW6YQ="         `shouldBe` Right "foob"
+      decode "MZXW6YTB"         `shouldBe` Right "fooba"
+      decode "MZXW6YTBOI======" `shouldBe` Right "foobar"
 
     it "inverse for encode" $ property $ \bs ->
-      decode (encode bs) == bs
+      decode (encode bs) == Right bs
 
     it "case insensitive" $ property $ \bs ->
-      decode (BC.map toLower (encode bs)) == bs
+      decode (BC.map toLower (encode bs)) == Right bs
 
     it "fail gracefully if encoded data contains non alphabet chars" $ do
       evaluate (decode "0=======")         `shouldThrow` anyErrorCall
@@ -54,20 +55,20 @@ spec = do
 
   describe "decodeLenient" $ do
     it "conform RFC examples" $ do
-      decodeLenient ""                 `shouldBe` ""
-      decodeLenient "MY======"         `shouldBe` "f"
-      decodeLenient "MZXQ===="         `shouldBe` "fo"
-      decodeLenient  "MZXW6==="        `shouldBe` "foo"
-      decodeLenient "MZXW6YQ="         `shouldBe` "foob"
-      decodeLenient "MZXW6YTB"         `shouldBe` "fooba"
-      decodeLenient "MZXW6YTBOI======" `shouldBe` "foobar"
+      decodeLenient ""                 `shouldBe` Right ""
+      decodeLenient "MY======"         `shouldBe` Right "f"
+      decodeLenient "MZXQ===="         `shouldBe` Right "fo"
+      decodeLenient  "MZXW6==="        `shouldBe` Right "foo"
+      decodeLenient "MZXW6YQ="         `shouldBe` Right "foob"
+      decodeLenient "MZXW6YTB"         `shouldBe` Right "fooba"
+      decodeLenient "MZXW6YTBOI======" `shouldBe` Right "foobar"
 
     it "inverse for encode" $ property $ \bs ->
-      decodeLenient (encode bs) == bs
+      decodeLenient (encode bs) == Right bs
 
     it "case insensitive" $ property $ \bs ->
-      decodeLenient (BC.map toLower (encode bs)) == bs
+      decodeLenient (BC.map toLower (encode bs)) == Right bs
 
     it "skip non alphabet chars" $ do
-      decodeLenient "|"   `shouldBe` ""
-      decodeLenient "M|Y" `shouldBe` "f"
+      decodeLenient "|"   `shouldBe` Right ""
+      decodeLenient "M|Y" `shouldBe` Right "f"

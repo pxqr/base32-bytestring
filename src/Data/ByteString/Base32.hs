@@ -57,10 +57,10 @@ decTable = BS.pack $ L.map decW5 [minBound .. maxBound]
 
 -- | Decode a base32 encoded bytestring. This functions is
 -- case-insensitive and do not require correct padding.
-decode :: Base32 -> ByteString
+decode :: Base32 -> Either String ByteString
 decode = pack5 decTable
 
 -- | The same as 'decode' but with additional leniency: decodeLenient
 -- will skip non-alphabet characters.
-decodeLenient :: Base32 -> ByteString
+decodeLenient :: Base32 -> Either String ByteString
 decodeLenient = pack5Lenient decTable
