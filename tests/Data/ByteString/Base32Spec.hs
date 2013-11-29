@@ -3,7 +3,6 @@
 module Data.ByteString.Base32Spec (spec) where
 
 import Control.Applicative
-import Control.Exception
 import Data.ByteString as BS
 import Data.ByteString.Char8 as BC
 import Data.ByteString.Base32 as Base32
@@ -50,8 +49,8 @@ spec = do
       decode (BC.map toLower (encode bs)) == Right bs
 
     it "fail gracefully if encoded data contains non alphabet chars" $ do
-      evaluate (decode "0=======")         `shouldThrow` anyErrorCall
-      evaluate (decode "AAAAAAAA0=======") `shouldThrow` anyErrorCall
+      decode "0======="         `shouldBe` Left "'0' is not base32 character"
+      decode "AAAAAAAA0=======" `shouldBe` Left "'0' is not base32 character"
 
   describe "decodeLenient" $ do
     it "conform RFC examples" $ do

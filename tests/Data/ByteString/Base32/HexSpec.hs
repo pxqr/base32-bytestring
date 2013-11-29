@@ -3,7 +3,6 @@
 module Data.ByteString.Base32.HexSpec ( spec ) where
 
 import Control.Applicative
-import Control.Exception
 import Data.ByteString as BS
 import Data.ByteString.Char8 as BC
 import Data.ByteString.Base32.Hex
@@ -44,8 +43,8 @@ spec = do
       decode (BC.map toLower (encode bs)) == Right bs
 
     it "fail gracefully if encoded data contains non alphabet chars" $ do
-      evaluate (decode "#=======")         `shouldThrow` anyErrorCall
-      evaluate (decode "AAAAAAAA#=======") `shouldThrow` anyErrorCall
+      decode "#======="         `shouldBe` Left "'#' is not base32 character"
+      decode "AAAAAAAA#=======" `shouldBe` Left "'#' is not base32 character"
 
   describe "decodeLenient" $ do
     it "conform RFC examples" $ do
