@@ -36,7 +36,7 @@ encW5 !x
 encTable :: EncTable
 encTable = BS.pack $ L.map encW5 [0..31]
 
--- | Encode a bytestring into base32hex form.
+-- | Encode an arbitrary bytestring into (upper case) base32hex form.
 encode :: ByteString -> Base32Hex
 encode = unpack5 encTable
 

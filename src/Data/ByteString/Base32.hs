@@ -37,7 +37,7 @@ encW5 !x
 encTable :: EncTable
 encTable = BS.pack $ L.map encW5 [0..31]
 
--- | Encode a bytestring into base32 form.
+-- | Encode an arbitrary bytestring into (upper case) base32 form.
 encode :: ByteString -> Base32
 encode = unpack5 encTable
 
@@ -56,7 +56,7 @@ decTable :: ByteString
 decTable = BS.pack $ L.map decW5 [minBound .. maxBound]
 
 -- | Decode a base32 encoded bytestring. This functions is
--- case-insensitive and do not requires correct padding.
+-- case-insensitive and do not require correct padding.
 decode :: Base32 -> ByteString
 decode = pack5 decTable
 
