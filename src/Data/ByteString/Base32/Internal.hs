@@ -8,7 +8,7 @@
 --   (Word5 <-> Word8) and (Word8 -> Word5) bytestring packers using
 --   lookup table.
 --
-{-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE CPP, BangPatterns #-}
 module Data.ByteString.Base32.Internal
        ( Word5
        , Word8
@@ -22,6 +22,9 @@ module Data.ByteString.Base32.Internal
        , invIx
        ) where
 
+#if !MIN_VERSION_base(4,6,0)
+import Prelude hiding (catch)
+#endif
 import Control.Exception hiding (mask)
 import Data.Bits.Extras
 import Data.ByteString as BS
