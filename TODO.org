@@ -1,3 +1,0 @@
-* DONE base32hex
-* WONT coverage
-* TODO lazy bytestrings
